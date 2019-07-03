@@ -30,13 +30,9 @@ import org.junit.Test;
 
 public class BuildTarMojoIntegrationTest {
 
-  @ClassRule public static final TestPlugin testPlugin = new TestPlugin();
+  @ClassRule public static final TestProject simpleTestProject = new TestProject("simple");
 
-  @ClassRule
-  public static final TestProject simpleTestProject = new TestProject(testPlugin, "simple");
-
-  @ClassRule
-  public static final TestProject skippedTestProject = new TestProject(testPlugin, "empty");
+  @ClassRule public static final TestProject skippedTestProject = new TestProject("empty");
 
   /**
    * Builds and runs jib:buildTar on a project at {@code projectRoot} pushing to {@code

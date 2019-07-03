@@ -613,12 +613,12 @@ public class MavenProjectPropertiesTest {
   private BuildConfiguration setupBuildConfiguration(
       String appRoot, ContainerizingMode containerizingMode)
       throws InvalidImageReferenceException, IOException, CacheDirectoryCreationException {
-    JibContainerBuilder JibContainerBuilder =
+    JibContainerBuilder jibContainerBuilder =
         new MavenProjectProperties(mockMavenProject, mockMavenSession, mockLog)
             .createContainerBuilder(
                 RegistryImage.named("base"), AbsoluteUnixPath.get(appRoot), containerizingMode);
     return JibContainerBuilderTestHelper.toBuildConfiguration(
-        JibContainerBuilder,
+        jibContainerBuilder,
         Containerizer.to(RegistryImage.named("to"))
             .setExecutorService(MoreExecutors.newDirectExecutorService()));
   }
