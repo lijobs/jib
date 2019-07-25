@@ -20,7 +20,6 @@ import com.google.cloud.tools.jib.api.DescriptorDigest;
 import com.google.cloud.tools.jib.blob.Blob;
 import com.google.cloud.tools.jib.blob.BlobDescriptor;
 import com.google.cloud.tools.jib.image.Layer;
-import java.util.Optional;
 
 /**
  * Layer prepared from {@link BuildAndCacheApplicationLayerStep} and {@link
@@ -29,11 +28,17 @@ import java.util.Optional;
  */
 class PreparedLayer implements Layer {
 
+  enum StateInTarget {
+    UNKNOWN,
+    EXISTS,
+    MISSING
+  }
+
   static class Builder {
 
     private Layer layer;
     private String name = "unnamed layer";
-    private Optional<Boolean> stateInTarget = Optional.empty();
+    private StateInTarget stateInTarget = StateInTarget.UNKNOWN;
 
     Builder(Layer layer) {
       this.layer = layer;
@@ -45,7 +50,7 @@ class PreparedLayer implements Layer {
     }
 
     /** Sets whether the layer exists in a target destination. Empty (absence) means unknown. */
-    Builder setStateInTarget(Optional<Boolean> stateInTarget) {
+    Builder setStateInTarget(StateInTarget stateInTarget) {
       this.stateInTarget = stateInTarget;
       return this;
     }
@@ -57,9 +62,9 @@ class PreparedLayer implements Layer {
 
   private final Layer layer;
   private final String name;
-  private final Optional<Boolean> stateInTarget;
+  private final StateInTarget stateInTarget;
 
-  private PreparedLayer(Layer layer, String name, Optional<Boolean> stateInTarget) {
+  private PreparedLayer(Layer layer, String name, StateInTarget stateInTarget) {
     this.layer = layer;
     this.name = name;
     this.stateInTarget = stateInTarget;
@@ -69,7 +74,7 @@ class PreparedLayer implements Layer {
     return name;
   }
 
-  Optional<Boolean> existsInTarget() {
+  StateInTarget existsInTarget() {
     return stateInTarget;
   }
 
