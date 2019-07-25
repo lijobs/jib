@@ -140,8 +140,8 @@ public class ObtainBaseImageLayerStepTest {
     PreparedLayer preparedFreshLayer = pullers.get(1).call();
 
     // Unknown if layers exist in target registry.
-    Assert.assertEquals(Optional.empty(), preparedExistingLayer.existsInTarget());
-    Assert.assertEquals(Optional.empty(), preparedFreshLayer.existsInTarget());
+    Assert.assertEquals(StateInTarget.UNKNOWN, preparedExistingLayer.existsInTarget());
+    Assert.assertEquals(StateInTarget.UNKNOWN, preparedFreshLayer.existsInTarget());
 
     // No blob checking should happen.
     Mockito.verify(registryClient, Mockito.never()).checkBlob(existingLayerDigest);
